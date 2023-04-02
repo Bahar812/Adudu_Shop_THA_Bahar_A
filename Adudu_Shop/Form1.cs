@@ -31,21 +31,25 @@ namespace Adudu_Shop
             dataTampilan.Columns.Add("Stock");
             dataTampilan.Columns.Add("ID Category");
             comboBoxFilter.Enabled = false;
-            dataTampilan.Rows.Add("B001", "Burger Kotak", 20000, 21, "C1");
-            dataTampilan.Rows.Add("E001", "Es Bubadibako", 25000, 10, "C2");
-            dataTampilan.Rows.Add("J001", "Jelly Probe", 13000, 18, "C3");
-            dataTampilan.Rows.Add("B002", "Bakso Kotak", 15000, 145, "C2");
-            dataTampilan.Rows.Add("R001", "Rujak Bomba", 10000, 8, "C3");
-            dataTampilan.Rows.Add("K001", "Kurma Agogo", 99000, 59, "C3");
-            dataTampilan.Rows.Add("E002", "Es Kepal Milo", 10000, 10, "C1");
+            dataTampilan.Rows.Add("J001", "Jas Hitam", 100000, 10, "C1");
+            dataTampilan.Rows.Add("T001", "T-Shirt Black Pink", 70000, 20, "C2");
+            dataTampilan.Rows.Add("T002", "T-Shirt Obsessive", 75000, 16, "C2");
+            dataTampilan.Rows.Add("R001", "Rok mini", 82000, 26, "C3");
+            dataTampilan.Rows.Add("J002", "Jeans Biru ", 90000, 5, "C4");
+            dataTampilan.Rows.Add("C001", "Celana Pendek Coklat", 60000, 11, "C4");
+            dataTampilan.Rows.Add("C002", "Cawat Blink-blink", 1000000, 1, "C5");
+            dataTampilan.Rows.Add("R002", "Rocca Shirt ", 50000, 8, "C2");
 
 
             dataCategory.Columns.Add("ID Category", typeof(string));
             dataCategory.Columns.Add("Nama Category", typeof(string));
 
-            dataCategory.Rows.Add("C1", "Minuman");
-            dataCategory.Rows.Add("C2", "Makanan");
-            dataCategory.Rows.Add("C3", "Dessert");
+            dataCategory.Rows.Add("C1", "Jas");
+            dataCategory.Rows.Add("C2", "T-Shirt");
+            dataCategory.Rows.Add("C3", "Rok");
+            dataCategory.Rows.Add("C4", "Celana");
+            dataCategory.Rows.Add("C5", "Cawat");
+
             comboBoxFilter.Text = "";
 
 
