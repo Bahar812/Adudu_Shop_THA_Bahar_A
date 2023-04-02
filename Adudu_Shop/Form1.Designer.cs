@@ -72,7 +72,6 @@
             this.dataGridViewTampil.Size = new System.Drawing.Size(518, 199);
             this.dataGridViewTampil.TabIndex = 0;
             this.dataGridViewTampil.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTampil_CellClick);
-            this.dataGridViewTampil.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTampil_CellContentClick);
             // 
             // dataGridViewCategory
             // 
@@ -81,7 +80,7 @@
             this.dataGridViewCategory.Name = "dataGridViewCategory";
             this.dataGridViewCategory.Size = new System.Drawing.Size(240, 150);
             this.dataGridViewCategory.TabIndex = 1;
-            this.dataGridViewCategory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCategory_CellContentClick);
+            this.dataGridViewCategory.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCategory_CellClick);
             // 
             // labelProduct
             // 
@@ -191,6 +190,7 @@
             this.textBoxHarga.Name = "textBoxHarga";
             this.textBoxHarga.Size = new System.Drawing.Size(121, 20);
             this.textBoxHarga.TabIndex = 14;
+            this.textBoxHarga.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxHarga_KeyPress);
             // 
             // textBoxStock
             // 
@@ -198,6 +198,7 @@
             this.textBoxStock.Name = "textBoxStock";
             this.textBoxStock.Size = new System.Drawing.Size(121, 20);
             this.textBoxStock.TabIndex = 15;
+            this.textBoxStock.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxStock_KeyPress);
             // 
             // buttonAddDetails
             // 

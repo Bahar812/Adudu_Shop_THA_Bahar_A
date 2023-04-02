@@ -121,7 +121,7 @@ namespace Adudu_Shop
         {
             if (textBoxNamaProduct.Text == "" || textBoxHarga.Text == "" || textBoxStock.Text == "" || comboBoxCategory.SelectedValue == null)
             {
-                MessageBox.Show("Data Kurang Lengkap", "NINUNINU");
+                MessageBox.Show("Data Kurang Lengkap", "NINUNINU", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -156,31 +156,40 @@ namespace Adudu_Shop
 
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            string newValueNama = textBoxNamaProduct.Text;
-            string newValueCategory = comboBoxCategory.SelectedValue.ToString();
-            float newValueHarga = Convert.ToInt64(textBoxHarga.Text);
-            int newValueStock = Convert.ToInt32(textBoxStock.Text);
+           
             if (idNow == "")
             {
-                MessageBox.Show("Pilih Objek yang ingin diedit terlebih dahulu !");
+                MessageBox.Show("Pilih Objek yang ingin diedit terlebih dahulu !","NINUNINU",MessageBoxButtons.OK,MessageBoxIcon.Warning);
             }
             else
             {
-                foreach(DataRow row in dataTampilan.Rows)
+                string newValueNama = textBoxNamaProduct.Text;
+                string newValueCategory = comboBoxCategory.SelectedValue.ToString();
+                float newValueHarga = Convert.ToInt64(textBoxHarga.Text);
+                int newValueStock = Convert.ToInt32(textBoxStock.Text);
+                foreach (DataRow row in dataTampilan.Rows)
                 {
                     if(row[0].ToString() != idNow)
                     {
                         continue;
                     }
-                    row[1] = newValueNama;
-                    row[2] = newValueHarga;
-                    row[3] = newValueStock;
-                    row[4] = newValueCategory;
+                    else
+                    {
+                        row[1] = newValueNama;
+                        row[2] = newValueHarga;
+                        row[3] = newValueStock;
+                        row[4] = newValueCategory;
+                    }
+                   
                     if (row[3].ToString() != "0")
                     {
                         continue;
                     }
-                    dataTampilan.Rows.Remove(row);
+                    else
+                    {
+                        dataTampilan.Rows.Remove(row);
+                    }
+                    
                     CaraFilter("");
                     return;
                 }
@@ -201,16 +210,16 @@ namespace Adudu_Shop
         }
 
 
-        private void dataGridViewTampil_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-           
-           
-        }
+      
 
         private void buttonRemoveProduct_Click(object sender, EventArgs e)
         {
             // Memeriksa apakah ada baris yang dipilih
-            
+            if (textBoxNamaProduct.Text == "" || textBoxHarga.Text == "" || textBoxStock.Text == "" || comboBoxCategory.SelectedValue == null)
+            {
+                MessageBox.Show("Pilih Objek yang ingin dihapus terlebih dahulu !", "NINUNINU", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             foreach (DataRow row in dataTampilan.Rows)
             {
                 if (row[0].ToString() != idNow)
@@ -239,7 +248,8 @@ namespace Adudu_Shop
             }
             if (cekAda == true)
             {
-                MessageBox.Show("Awas Category sudah ada", "Ninuninu");
+                MessageBox.Show("Awas Category sudah ada", "Ninuninu",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                textBoxNamaCategory.Text = "";
                 return;
             }
             string hurufDepan = "C";
@@ -247,7 +257,7 @@ namespace Adudu_Shop
 
             if(namaCategoryy == "")
             {
-                MessageBox.Show("Masukkan Nama Kategori terlebih dahulu");
+                MessageBox.Show("Masukkan Nama Kategori terlebih dahulu", "Ninuninu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return ;
             }
 
@@ -269,6 +279,12 @@ namespace Adudu_Shop
 
         private void buttonRemove_Click(object sender, EventArgs e)
         {
+            string namaCategoryy = textBoxNamaCategory.Text;
+            if (namaCategoryy == "")
+            {
+                MessageBox.Show("Pilih Objek Kategori Yang Ingin dihapus terlebih dahulu", "Ninuninu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             int i;
             foreach (DataRow row in dataCategory.Rows)
             {
@@ -311,10 +327,20 @@ namespace Adudu_Shop
 
         private void comboBoxFilter_SelectionChangeCommitted(object sender, EventArgs e)
         {
+            string nama;
+            nama = comboBoxFilter.SelectedValue.ToString();
+            foreach (DataRow row in dataCategory.Rows)
+            {
+                if(row[0].ToString() == nama)
+                {
+                    nama = row[1].ToString();
+                    break;
+                }
+            }
             CaraFilter(comboBoxFilter.SelectedValue.ToString());
             if(select == true)
             {
-                comboBoxFilter.Text = comboBoxFilter.SelectedValue.ToString();
+                comboBoxFilter.Text = nama;
             }
         }
 
@@ -331,7 +357,7 @@ namespace Adudu_Shop
             labelTimer.Text = DateTime.Now.ToString("HH:mm:ss");
         }
 
-        private void dataGridViewCategory_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridViewCategory_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             categoryNow = dataGridViewCategory.Rows[e.RowIndex].Cells[0].Value.ToString();
             textBoxNamaCategory.Text = dataGridViewCategory.Rows[e.RowIndex].Cells[1].Value.ToString();
@@ -350,6 +376,27 @@ namespace Adudu_Shop
 
             // Set background color form dengan warna acak
             this.BackColor = randomColor;
+        }
+
+        private void textBoxHarga_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Mencegah karakter selain angka dimasukkan ke dalam textbox
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                
+                e.Handled = true;
+                MessageBox.Show("Harus Angka blok","NINUNINU",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            }
+        }
+
+        private void textBoxStock_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Mencegah karakter selain angka dimasukkan ke dalam textbox
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Harus Angka blok", "NINUNINU", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }
