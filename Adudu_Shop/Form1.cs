@@ -22,6 +22,7 @@ namespace Adudu_Shop
         DataTable dataFilterr = new DataTable();
         public string categoryNow = "";
         public string idNow = "";
+        Dictionary<string, List<int>> existingIds = new Dictionary<string, List<int>>();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -70,6 +71,21 @@ namespace Adudu_Shop
             dataGridViewTampil.CurrentCell = null;
             comboBoxCategory.Text = "";
             comboBoxFilter.Text = "";
+
+            // Penyimpanan data pertama kali pada saat FormLoad
+            foreach (DataRow row in dataTampilan.Rows)
+            {
+                string id = row.Field<string>("ID Product");
+                string hurufDepan = id.Substring(0, 1).ToUpper();
+                int numericId = int.Parse(id.Substring(1));
+
+                if (!existingIds.ContainsKey(hurufDepan))
+                {
+                    existingIds[hurufDepan] = new List<int>();
+                }
+
+                existingIds[hurufDepan].Add(numericId);
+            }
         }
 
 
@@ -122,41 +138,49 @@ namespace Adudu_Shop
         }
       
         private void buttonAddDetails_Click(object sender, EventArgs e)
+{
+    if (textBoxNamaProduct.Text == "" || textBoxHarga.Text == "" || textBoxStock.Text == "" || comboBoxCategory.SelectedValue == null)
+    {
+        MessageBox.Show("Data Kurang Lengkap", "NINUNINU", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        return;
+    }
+
+    string hurufDepan = textBoxNamaProduct.Text.Substring(0, 1).ToUpper();
+    int newId = GetNextAvailableId(hurufDepan);
+
+    string newIdTampilan = hurufDepan + newId.ToString("D3");
+
+    DataRow row = dataTampilan.NewRow();
+    row[0] = newIdTampilan;
+    row[1] = textBoxNamaProduct.Text;
+    row[2] = textBoxHarga.Text;
+    row[3] = textBoxStock.Text;
+    row[4] = comboBoxCategory.SelectedValue;
+    dataTampilan.Rows.Add(row);
+
+    // Menambahkan ID yang baru ditambahkan ke daftar yang ada
+    existingIds[hurufDepan].Add(newId);
+
+    CaraFilter("");
+}
+
+        private int GetNextAvailableId(string hurufDepan)
         {
-            if (textBoxNamaProduct.Text == "" || textBoxHarga.Text == "" || textBoxStock.Text == "" || comboBoxCategory.SelectedValue == null)
+            if (!existingIds.ContainsKey(hurufDepan))
             {
-                MessageBox.Show("Data Kurang Lengkap", "NINUNINU", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                existingIds[hurufDepan] = new List<int>();
             }
 
-            var adaID = dataTampilan.AsEnumerable().Select(roww => roww.Field<string>("ID Product"));
-            string hurufDepan = textBoxNamaProduct.Text.Substring(0, 1).ToUpper();
-            int newId = 1;
+            int nextId = 1;
 
-            foreach (DataRow roww in dataTampilan.Rows)
+            while (existingIds[hurufDepan].Contains(nextId))
             {
-                if (roww[0].ToString()[0].ToString() == hurufDepan)
-                {
-                    newId++;
-                }
-               
+                nextId++;
             }
 
-            string newIdTampilan = hurufDepan + newId;
-            for (int i = newId.ToString().Length; i < 3; i++)
-            {
-                hurufDepan = string.Concat(hurufDepan, "0");
-            }
-            hurufDepan = string.Concat(hurufDepan, newId.ToString());
-            DataRow row = dataTampilan.NewRow();
-            row[0] = hurufDepan;
-            row[1] = textBoxNamaProduct.Text;
-            row[2] = textBoxHarga.Text;
-            row[3] = textBoxStock.Text;
-            row[4] = comboBoxCategory.SelectedValue;
-            dataTampilan.Rows.Add(row);
-            CaraFilter("");
+            return nextId;
         }
+
 
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
